@@ -101,18 +101,19 @@ s.exc_handler = mpi_show_help
     "--input_prefix"
         help = "the location and the root name of the input files"
         arg_type = String
+        default = ""
     
     "--xMin"
         help = "the minimum x-index to process (inclusive)"
         required = true
         arg_type = Int
-        required = true
+
 
     "--xMax"
         help = "the maximum x-index to process (inclusive)"
         required = true
         arg_type = Int
-        required = true
+
 
 end
 
@@ -238,6 +239,7 @@ if rank == root
     # Read h5 pertinant paramters using the u file: 
     Re, lx, ly, lz, y, NX0, NY, NZ = read_para_h5((process_file_list[1]*".u"*".h5"))
 
+    y = y[1:NY+1]
     xMin = max(1, xMin)
     xMax = min(NX0, xMax)
     NX   = xMax - xMin + 1
@@ -245,6 +247,7 @@ if rank == root
 
     # compute grids ...
     xgrid, ygrid, zgrid, xmidp, ymidp = compute_grids(lx, xMin, xMax, NX0, NX, y, lz, NZ)
+
 else
     (Re, lx, ly, lz, NX0, NX, NY, NZ, y, xMin, xMax, idMin, idMax, xgrid, ygrid, zgrid, xmidp, ymidp) = 
         (nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing, nothing)
@@ -312,7 +315,10 @@ for process_file_name in process_file_list
         filename_w = process_file_name * ".w" * ".h5"
         filename_p = process_file_name * ".p" * ".h5"
 
-        file_index = split(process_file_name, ".")[end]
+        # file_index = split(process_file_name, ".")[end]
+        directory, file_index = splitdir(process_file_name)
+        file_index = join(split(file_index, ".")[2:end], ".")
+
         # output filename to store u, v, w & p collocated in space
         var = args["var"]
         grad_flag = args["calcGrad"]
@@ -368,6 +374,9 @@ for process_file_name in process_file_list
         # interpolate in x, interpolate in y & convert Fourier -> Phys: u
         u_phys_results = toPhysAndCollocate_u_VGT_h5(global_array, xgrid, xmidp, ygrid, ymidp, zgrid, root, comm, fo = fo, VGT = grad_flag)
         MPI.Barrier(comm)
+
+
+
         # extract just the u_phys field (first element) from the returned tuple
         u_phys = isa(u_phys_results, Tuple) ? u_phys_results[1] : u_phys_results
         # compute the z-averaged field and add it to u_mean storage
@@ -393,6 +402,7 @@ for process_file_name in process_file_list
         if rank == root
             println("\nDoing V-kind variable\n")
             global_array = read_value_h5(filename_v, xMin, xMax)
+            global_array = global_array[:,1:NY-1,:]
             println("\nFinished reading from '$filename_v': $(size(global_array))\n")
         else
             global_array = nothing

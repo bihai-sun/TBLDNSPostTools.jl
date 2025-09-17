@@ -1,0 +1,17 @@
+#!/bin/bash
+# PBS OPTIONS:
+#PBS -l ncpus=48
+#PBS -l walltime=8:00:00 -l mem=192GB
+#PBS -q normal
+#PBS -l storage=scratch/g75+gdata/g75+scratch/rd13+gdata/rd13
+#PBS -j eo
+#PBS -e output.log
+#PBS -P rd13
+#PBS -m abe
+#PBS -M bihai.sun@monash.edu
+
+cd /home/565/bs6504/scratch_rd13/Resolvent_analysis/Forcing_calculation/time_resolved/field_gen/TBLDNSPostTools.jl/run
+
+echo "Running on $(hostname)"
+# execute DNS code:
+mpirun -np 48 julia --project=.. Convert+Collocate-uvwp+du_idx_j.jl --idMin 1 --idMax 50 -V uvw --xMin 1 --xMax 1000 --input_prefix_list files_list.txt --output_prefix ../../fields/run1_phy/tbl | tee output.log
