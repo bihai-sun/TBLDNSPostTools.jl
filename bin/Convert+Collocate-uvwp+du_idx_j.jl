@@ -114,6 +114,12 @@ s.exc_handler = mpi_show_help
         required = true
         arg_type = Int
 
+    "--yMax"
+        help = "the maximum y-index to process (inclusive) from the wall"
+        arg_type = Int
+        default = 0
+
+
 
 end
 
@@ -201,8 +207,7 @@ process_file_list = MPI.bcast(process_file_list, root, comm)
 
 # Continue with the rest only if no error occurred
 if rank == root
-    args["idMin"] = args["idMin"] == 0 ? minimum(findices) : args["idMin"]
-    args["idMax"] = args["idMax"] == 0 ? maximum(findices) : args["idMax"]
+
 
     xMin  = args["xMin"]
     xMax  = args["xMax"]
@@ -541,7 +546,7 @@ MPI.Barrier(comm)
 
 if rank == root
     println("\nDone\n")
-    NoSamples = length(findices) * length(zgrid[1:end-2])
+    NoSamples = length(process_file_list) * length(zgrid[1:end-2])
     println("Number of samples           : $NoSamples\n")
     # output file name to store the mean fields
     if NX < NX0
