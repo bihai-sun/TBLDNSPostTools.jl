@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 export JULIA_TERM_TITLE=0  
-./sysmpirun -np 1 julia --project=.. Convert+Collocate-uvwp+du_idx_j.jl  --input_prefix_list files_list_gadi.txt --idMax 1 --xMin 3800 --xMax 3810 --var uvw --output ../../rawdata_long_interval_local/tbl
+./sysmpirun -np 48 julia --project=.. Convert+Collocate-uvwp+du_idx_j.jl  --input_prefix_list files_list_hpc1.txt --idMax 1 --xMin 3800 --xMax 4800 --yMax 400 --var uvw --output ../../rawdata_long_interval_local/tbl

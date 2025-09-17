@@ -244,6 +244,10 @@ if rank == root
     # Read h5 pertinant paramters using the u file: 
     Re, lx, ly, lz, y, NX0, NY, NZ = read_para_h5((process_file_list[1]*".u"*".h5"))
 
+    if args["yMax"] > 0
+        NY = min(args["yMax"], NY)
+    end
+
     y = y[1:NY+1]
     xMin = max(1, xMin)
     xMax = min(NX0, xMax)
@@ -325,7 +329,6 @@ for process_file_name in process_file_list
         file_index = join(split(file_index, ".")[2:end], ".")
 
         # output filename to store u, v, w & p collocated in space
-        var = args["var"]
         grad_flag = args["calcGrad"]
         grad_output_name = grad_flag ? "_grad" : ""
 
@@ -370,6 +373,7 @@ for process_file_name in process_file_list
         if rank == root
             println("\nDoing U-kind variable\n")
             global_array = read_value_h5(filename_u, xMin, xMax)
+            global_array = global_array[:,1:NY,:]
             println("\nFinished reading from '$filename_u': $(size(global_array))\n")
         else
             global_array = nothing
@@ -439,6 +443,7 @@ for process_file_name in process_file_list
         if rank == root
             println("\nDoing W-kind variable\n")
             global_array = read_value_h5(filename_w, xMin, xMax)
+            global_array = global_array[:,1:NY,:]
             println("\nFinished reading from '$filename_w': $(size(global_array))\n")
         else
             global_array = nothing
@@ -549,11 +554,17 @@ if rank == root
     NoSamples = length(process_file_list) * length(zgrid[1:end-2])
     println("Number of samples           : $NoSamples\n")
     # output file name to store the mean fields
+    var = args["var"]
+    grad_flag = args["calcGrad"]
+    grad_output_name = grad_flag ? "_grad" : ""
+
     if NX < NX0
-        ofile_name_mean = ARGS[1] * raw".Mean_uvwp_phys__" * string(xMin) * ":" * string(xMax) * ".h5"
+        ofile_name_mean = args["output_prefix"] * ".Mean" * ".$(var)" * "$(grad_output_name)" *".phys.$(string(xMin))-$(string(xMax))" * ".h5"
     else
-        ofile_name_mean = ARGS[1] * raw".Mean_uvwp_phys" * ".h5"
+        ofile_name_mean = args["output_prefix"] * ".Mean" * ".$(var)" * "$(grad_output_name)" *".phys" * ".h5"
     end
+
+
     println("\nOutput file for Mean Fields : $ofile_name_mean\n") 
     # open the output file
     of = h5open(ofile_name_mean, "w")
