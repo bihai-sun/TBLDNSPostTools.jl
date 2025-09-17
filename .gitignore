@@ -1,0 +1,42 @@
+# Ignore all output files and directories at any level
+**/output*
+
+# Julia specific ignores
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+deps/deps.jl
+docs/build/
+docs/site/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor temporary files
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# HDF5 files (if they are large output files)
+# Uncomment the next line if you want to ignore all HDF5 files
+# *.h5
+
+# Backup files
+*.bak
+*.backup
+run/output

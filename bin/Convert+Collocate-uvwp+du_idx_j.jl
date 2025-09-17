@@ -305,7 +305,7 @@ for process_file_name in process_file_list
     var = args["var"]
     grad_flag = args["calcGrad"]
     if rank == root
-        println("\n$(Dates.now()) Processing file: $process_file_name\n")
+        println("\n[$(Dates.now())] Processing file: $process_file_name\n")
         # input filename for u, v, w & p
         filename_u = process_file_name * ".u" * ".h5"
         filename_v = process_file_name * ".v" * ".h5"
