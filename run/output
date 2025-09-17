@@ -1,0 +1,48 @@
+]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;Julia]0;JuliaNumber of cores             : 48
+Input field root name       : ../../rawdata_long_interval_local/tbl
+Output field root name      : ../../rawdata_long_interval_local/tbl
+Variable to process         : uvw
+Calculate gradients         : No
+xMin                        : 3800
+xMax                        : 4800
+
+process_file_list           : ["../../rawdata_long_interval_local/tbl.207", "../../rawdata_long_interval_local/tbl.208", "../../rawdata_long_interval_local/tbl.209", "../../rawdata_long_interval_local/tbl.210", "../../rawdata_long_interval_local/tbl.211", "../../rawdata_long_interval_local/tbl.212", "../../rawdata_long_interval_local/tbl.213", "../../rawdata_long_interval_local/tbl.214", "../../rawdata_long_interval_local/tbl.215", "../../rawdata_long_interval_local/tbl.216", "../../rawdata_long_interval_local/tbl.217", "../../rawdata_long_interval_local/tbl.218", "../../rawdata_long_interval_local/tbl.219", "../../rawdata_long_interval_local/tbl.220", "../../rawdata_long_interval_local/tbl.221", "../../rawdata_long_interval_local/tbl.222", "../../rawdata_long_interval_local/tbl.223", "../../rawdata_long_interval_local/tbl.224"]
+Reading parameters from file: ../../rawdata_long_interval_local/tbl.207.u.h5
+
+lX, lY, lZ                  : 628.3185307179587 29.78229835603124 104.92919462989909
+NX, NY, NZ                  : 8193 1001 1364
+Updated NX, NY, NZ          : 1001, 1001, 1364
+
+
+2025-09-17T17:47:52.777 Processing file: ../../rawdata_long_interval_local/tbl.207
+
+
+Output file                 : ../../rawdata_long_interval_local/tbl.207.uvw.phys.3800-4800.h5
+
+
+Doing U-kind variable
+
+Reading field (only) from file: ../../rawdata_long_interval_local/tbl.207.u.h5
+
+Finished reading from '../../rawdata_long_interval_local/tbl.207.u.h5': (1364, 1001, 1001)
+
+InterpolateAtXmidPt: Interpolating to X mid-points ...
+Interpolating in X
+
+InterpolateAtY_IRFFT_2_Phys: Interpolating to Y mid-points and IRFFTing in Z ...
+Interpolating in Y
+
+IRFFTing in Z
+
+Writing to output h5 file: u_physical
+
+Doing V-kind variable
+
+Reading field (only) from file: ../../rawdata_long_interval_local/tbl.207.v.h5
+
+Finished reading from '../../rawdata_long_interval_local/tbl.207.v.h5': (1364, 1000, 1001)
+
+IRFFT_2_Phys: IRFFTing in Z ...
+IRFFTing in Z
+
+Writing to output h5 file: v_physical

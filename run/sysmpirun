@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# sysmpirun: wrapper for running Julia with system OpenMPI 2.0.4
+
+set -euo pipefail
+
+# Point to your system OpenMPI installation
+MPI_HOME=/usr/local/apps/openmpi-2.0.4
+
+# Clean environment
+export PATH="$MPI_HOME/bin:$PATH"
+export LD_LIBRARY_PATH="$MPI_HOME/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+unset OMPI_MCA_component_path OMPI_HOME OPAL_LIBDIR
+
+# Pin OpenMPI runtime
+export OPAL_PREFIX="$MPI_HOME"
+
+# Ensure a writable TMPDIR
+export TMPDIR="/tmp/$USER"
+mkdir -p "$TMPDIR"
+
+# Conservative defaults; adjust if you want
+export OMPI_MCA_btl=self,tcp
+export OMPI_MCA_oob=tcp
+
+# Force OpenMPI to look only in its own component directory
+exec "$MPI_HOME/bin/mpirun" \
+     --prefix "$MPI_HOME" \
+     --mca mca_base_component_path "$MPI_HOME/lib/openmpi" \
+     --mca shmem posix \
+     "$@"

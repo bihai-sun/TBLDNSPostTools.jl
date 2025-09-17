@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export JULIA_TERM_TITLE=0  
+./sysmpirun -np 48 julia --project=.. Convert+Collocate-uvwp+du_idx_j.jl "$@"
